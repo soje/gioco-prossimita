@@ -6,12 +6,15 @@
 ########################################################################
 import smbus
 import time
+
+
 class PCF8574_I2C(object):
     OUPUT = 0
     INPUT = 1
     
     def __init__(self,address):
         # Note you need to change the bus number to 0 if running on a revision 1 Raspberry Pi.
+        
         self.bus = smbus.SMBus(1)
         self.address = address
         self.currentValue = 0
@@ -50,19 +53,26 @@ def loop():
         time.sleep(1)
         
 class PCF8574_GPIO(object):#Standardization function interface
+    
     OUT = 0
     IN = 1
     BCM = 0
     BOARD = 0
+    
     def __init__(self,address):
+        # print(address)
         self.chip = PCF8574_I2C(address)
         self.address = address
+    
     def setmode(self,mode):#PCF8574 port belongs to two-way IO, do not need to set the input and output model
         pass
+    
     def setup(self,pin,mode):
         pass
+    
     def input(self,pin):#Read PCF8574 one port of the data
         return self.chip.digitalRead(pin)
+    
     def output(self,pin,value):#Write data to PCF8574 one port
         self.chip.digitalWrite(pin,value)
         
